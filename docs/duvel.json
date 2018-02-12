@@ -1,0 +1,113 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "The name of the duvel project.",
+      "pattern": "([a-z]|\\-|\\_)+",
+      "examples": ["my_duvel_project", "graphql-api-base"]
+    },
+    "display_name": {
+      "type": "string",
+      "title": "Display name",
+      "description": "A human-readable display name for the duvel project.",
+      "default": "",
+      "examples": ["My duvel project", "GraphQL API Base"]
+    },
+    "up": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "custom": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Command name",
+                "description": "The name for the custom command.",
+                "examples": ["Install minikube"]
+              },
+              "met?": {
+                "type": "string"
+              },
+              "meet": {
+                "$ref": "#/definitions/executable"
+              },
+              "down": {
+                "$ref": "#/definitions/executable"
+              },
+              "nuke": {
+                "$ref": "#/definitions/executable"
+              }
+            },
+            "required": ["name"]
+          }
+        }
+      }
+    }
+  },
+  "required": ["name"],
+  "definitions": {
+    "execution_list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "brew": {
+            "type": "string"
+          },
+          "exec": {
+            "type": "string"
+          },
+          "sudo": {
+            "type": "string"
+          },
+          "curl": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 1,
+            "patternProperties": {
+              "([a-z]|\\-|\\_)+": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "os_executable": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/execution_list"
+        }
+      ]
+    },
+    "executable": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/execution_list"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "osx": {
+              "$ref": "#/definitions/os_executable"
+            },
+            "linux": {
+              "$ref": "#/definitions/os_executable"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
